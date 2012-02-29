@@ -37,7 +37,8 @@ int main()
 	{
 		struct sockaddr_in  Addr;
 		int               cli_sock;
-		int               sock_len;
+		//int               sock_len;
+		socklen_t         sock_len;
 		if((cli_sock = accept(ser_socket, (struct sockaddr*)&Addr, &sock_len)) < 0)
 		{
 			printf("error hanppen : accept\n");
