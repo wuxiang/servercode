@@ -1,6 +1,6 @@
 /*
  * Some basic routines, called by dotsd.c
- * 
+ *
  * (c) Columbia University, 2004-2006, All Rights Reserved.
  * Author: Weibin Zhao
  */
@@ -45,7 +45,7 @@ char *get_token(char *buf, int *ptr)
 
 /*
  * Read a line from socket
- */ 
+ */
 static pthread_key_t  rl_key;
 static pthread_once_t rl_once = PTHREAD_ONCE_INIT;
 
@@ -125,22 +125,57 @@ ssize_t readline(int fd, void *vptr, size_t maxlen)
  */
 #define getbits(x, p, n) ((x >> (p+1-n)) & ~(~0 << n))
 
+enum M_BYTE_ORDER
+{
+	__BYTE_ORDER_INIT = 0,
+	__BYTE_ORDER_BIG,
+	__BYTE_ORDER_LITTLE,
+};
+
+typedef union M_JUDGE_TYPE{
+	unsigned  long int ll;
+	unsigned char  c[4];
+}M_JUDGE_TYPE;
+
+bool isBigEndian()
+{
+	char type = __BYTE_ORDER_INIT;
+
+	M_JUDGE_TYPE  jp;
+	jp.ll = 0x12345678;
+	type = (jp.c[0] == 0x12 ? __BYTE_ORDER_BIG : __BYTE_ORDER_LITTLE);
+
+	return  (type == __BYTE_ORDER_BIG) ? true : false;
+}
+
 uint64_t htonll(uint64_t n)
 {
-#if __BYTE_ORDER == __BIG_ENDIAN
-    return n; 
-#else
+	if (isBigEndian())
+	{
+		return n;
+	}
+
     return (((uint64_t)htonl(n)) << 32) + htonl(n >> 32);
-#endif
+//#if __BYTE_ORDER == __BIG_ENDIAN
+//    return n;
+//#else
+//    return (((uint64_t)htonl(n)) << 32) + htonl(n >> 32);
+//#endif
 }
 
 uint64_t ntohll(uint64_t n)
 {
-#if __BYTE_ORDER == __BIG_ENDIAN
-    return n; 
-#else
+	if (isBigEndian())
+	{
+		return n;
+	}
+
     return (((uint64_t)ntohl(n)) << 32) + ntohl(n >> 32);
-#endif
+//#if __BYTE_ORDER == __BIG_ENDIAN
+//    return n;
+//#else
+//    return (((uint64_t)ntohl(n)) << 32) + ntohl(n >> 32);
+//#endif
 }
 
 #if 1
@@ -178,11 +213,11 @@ int write_int(char **buf, int x, int size)
     return size;
 }
 #endif
-    
+
 #if 1
 /*
  * Write a 64-bit long integer
- */ 
+ */
 int write_long(char **buf, uint64_t x)
 {
     uint64_t t = htonll(x);     /* convert to network byte order */
@@ -195,7 +230,7 @@ int write_long(char **buf, uint64_t x)
 #if 0
 /*
  * Another implementation of write_long (write high byte first)
- */ 
+ */
 int write_long(char **buf, uint64_t x)
 {
     int i;
@@ -247,7 +282,7 @@ int read_int(char **buf, int size)
 #if 1
 /*
  * Read a 64-bit long integer
- */ 
+ */
 uint64_t read_long(char **buf)
 {
     uint64_t x = 0;
@@ -260,7 +295,7 @@ uint64_t read_long(char **buf)
 #if 0
 /*
  * Another implementation of read_long (read high byte first)
- */ 
+ */
 uint64_t read_long(char **buf)
 {
     uint64_t x = 0;
