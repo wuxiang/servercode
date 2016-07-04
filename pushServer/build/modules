@@ -1,0 +1,7 @@
+#module:module_alias:setup_tally:after_setup:module_path:linked_module:LM2:LM3:LM4:LM5
+util::build::src/util:
+command::build::src/command:
+controller::build::src/controller:
+process::build::src/process:
+pushserv::setup::src/main:util:controller:command:process:
+

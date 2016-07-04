@@ -1,0 +1,109 @@
+#!/bin/sh
+
+#########编译宏说明###############################
+# _USEPOLLWAIT  是否采用EPOLL检测网络
+# _USE_SQL		是否采用数据库存取数据
+# _IGNORE_EXCHANGE_TIME 是否忽略成交时间的限定，满足条件及推送股价预警
+# _LOG_USER=1	是否跟踪指定用户列表的log信息，数值标识级别。
+##################################################
+
+###################Compiler define################
+## 32bit
+LIBS="-L/usr/lib -L/usr/local/lib"
+export CC_COMPILER=g++
+export CC_CFLAGS="-ggdb -pthread -Wall -D_USEPOLLWAIT -D_USE_SQL -D_IGNORE_EXCHANGE_TIME -D_LOG_USER=1 "
+
+## 64bit
+#LIBS="-L/usr/lib64 -L/lib64 -L/usr/local/lib64"
+#export CC_COMPILER=g++
+#export CC_CFLAGS="-ggdb -pthread -Wall -m64 -D_USEPOLLWAIT -D_FILE_OFFSET_BITS=64 -D_USE_SQL -D_LOG_USER=1"
+##################################################
+
+#############Include Define ######################
+export CC_IPATH=" -I/usr/include -I/usr/include/libxml2 -I${PWD}/../src "
+export CC_LPATH=" -lpthread -lm -lxml2 -lrt -lodbc -lz -lssl -lcrypto "
+##################################################
+
+#### OutPut define################################
+export APP_DIST_DIR=$HOME/dist/PushServer_new
+##################################################
+
+BUILD_HOME=$PWD
+SRC_APPHOME=$BUILD_HOME/../home
+ROOT_TARGET="build"
+
+#
+# Parse Params
+#
+for params
+do
+    if (test "$params" = "setup") \
+            || (test "$params" = "build") \
+            || (test "$params" = "clean")
+    then
+        ROOT_TARGET="$params"
+    else
+        params_prefix=`echo "$params" | cut -c1-2`
+        if (test "$params_prefix" = "-P") then
+            CC_CFLAGS=`echo "$params" | cut -c3-128`
+            export CC_CFLAGS
+        else
+            ROOT_TARGET=""
+        fi
+    fi
+done
+
+if (test ! -d $SRC_APPHOME) then
+    echo "Path [$SRC_APPHOME] not found!"
+    echo ""
+    exit
+fi
+
+if (test "$ROOT_TARGET" = "") then
+    echo "Usage: ./build [setup | build | clean] [-P\"compile option\"]"
+    echo ""
+    exit
+fi
+
+DIST_DIR=$APP_DIST_DIR
+if (test "$DIST_DIR" = "") then
+    DIST_DIR=$BUILD_HOME/dist
+fi
+
+export DIST_DIR
+if (test ! -d $DIST_DIR) then
+    mkdir -p $DIST_DIR
+fi
+
+
+#
+# compile
+#
+
+echo ""
+echo "`echo $ROOT_TARGET | tr "[a-z]" "[A-Z]"`"
+echo "----------------------------------------------------------------------"
+
+if (test "$ROOT_TARGET" = "setup") then
+    cp -fR $SRC_APPHOME/* $DIST_DIR
+fi
+
+
+SAVEDIFS=$IFS
+IFS=:
+
+while read MODULE MODULE_ALIAS SETUP_TALLY MODULE_PATH LINKED_OBJS
+do
+    if (test "$MODULE" = "") then
+        continue
+    fi
+
+    case $MODULE in
+    \#*)
+        continue
+        ;;
+    esac
+
+    . ./build_mod $MODULE $ROOT_TARGET
+done < modules
+IFS=$SAVEDIFS

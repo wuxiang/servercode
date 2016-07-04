@@ -1,0 +1,197 @@
+#!/bin/sh
+
+BUILD_HOME=$PWD
+OBJS_HOME=$BUILD_HOME/objs
+SRC_DIR=$BUILD_HOME/../src
+TEST_DIR=$BUILD_HOME/../test
+
+MODULE=""
+MODULE_ALIAS=""
+SETUP_TALLY=""
+MODULE_PATH=""
+TARGET="build"
+THE_SHARE_OBJS=""
+THE_LINKED_MODULE=""
+AFTER_SETUP=""
+
+
+#
+# Parse Params
+#
+if (test $# -gt 0) then
+    SAVEDIFS=$IFS
+    IFS=:
+
+    while read MODULE MODULE_ALIAS SETUP_TALLY AFTER_SETUP MODULE_PATH LINKED_MODULE LM2 LM3 LM4 LM5
+    do
+        if (test "$MODULE" = "$1") then
+            if (test "$MODULE_ALIAS" = "") then
+                MODULE_ALIAS=$MODULE
+            fi
+
+            if (test "$SETUP_TALLY" = "") then
+                SETUP_TALLY="setup"
+            fi
+
+            if (test "$MODULE_PATH" = "") then
+                MODULE_PATH="$SRC_DIR/$MODULE"
+            else
+                MODULE_PATH="$BUILD_HOME/../$MODULE_PATH"
+            fi
+
+            if (test "$LINKED_MODULE" != "") then
+                THE_LINKED_MODULE="$LINKED_MODULE $THE_LINKED_MODULE"
+                THE_SHARE_OBJS="$OBJS_HOME/${LINKED_MODULE}_objs/*.o $THE_SHARE_OBJS"
+            fi
+
+            if (test "$LM2" != "") then
+                THE_LINKED_MODULE="$LM2 $THE_LINKED_MODULE"
+                THE_SHARE_OBJS="$OBJS_HOME/${LM2}_objs/*.o $THE_SHARE_OBJS"
+            fi
+            if (test "$LM3" != "") then
+                THE_LINKED_MODULE="$LM3 $THE_LINKED_MODULE"
+                THE_SHARE_OBJS="$OBJS_HOME/${LM3}_objs/*.o $THE_SHARE_OBJS"
+            fi
+            if (test "$LM4" != "") then
+                THE_LINKED_MODULE="$LM4 $THE_LINKED_MODULE"
+                THE_SHARE_OBJS="$OBJS_HOME/${LM4}_objs/*.o $THE_SHARE_OBJS"
+            fi
+            if (test "$LM5" != "") then
+                THE_LINKED_MODULE="$LM5 $THE_LINKED_MODULE"
+                THE_SHARE_OBJS="$OBJS_HOME/${LM5}_objs/*.o $THE_SHARE_OBJS"
+            fi
+
+            break
+        fi
+    done < modules
+    IFS=$SAVEDIFS
+fi
+
+
+for params
+do
+    if (test "$params" = "$1") then
+        continue
+    fi
+
+    if (test "$params" = "setup") \
+            || (test "$params" = "build") \
+            || (test "$params" = "clean")
+    then
+        TARGET="$params"
+    else
+        params_prefix=`echo "$params" | cut -c1-2`
+        if (test "$params_prefix" = "-P") then
+            CC_CFLAGS=`echo "$params" | cut -c3-128`
+            export CC_CFLAGS
+        else
+            TARGET=""
+        fi
+    fi
+done
+
+
+if (test "$MODULE" = "") || (test "$MODULE_ALIAS" = "") \
+        || (test "$SETUP_TALLY" = "") || (test "$MODULE_PATH" = "") \
+        || (test "$TARGET" = "") then
+    echo "Usage: ./build_mod module [setup | build | clean] [-P\"compile option\"]"
+    echo "Please checked the modules for defects."
+    echo ""
+    exit
+fi
+
+if (test ! -d $MODULE_PATH) then
+    echo "Path [$MODULE_PATH] not found!"
+    echo ""
+    exit
+fi
+
+
+#
+# compile
+#
+
+echo ""
+echo "######################################################################"
+echo "##    BUILD           :   $MODULE"
+echo "##    MODULE_ALIAS    :   $MODULE_ALIAS"
+echo "##    SETUP_TALLY     :   $SETUP_TALLY"
+echo "##    MODULE_PATH     :   $MODULE_PATH"
+echo "##    TRAGET          :   $TARGET"
+echo "##    CC_CFLAGS       :   $CC_CFLAGS"
+echo "##    LINKED_MODULE   :   $THE_LINKED_MODULE"
+echo "######################################################################"
+echo ""
+
+MODULE_OBJS_DIR=$OBJS_HOME/${MODULE}_objs
+DIST_AIM_PATH=$MODULE_OBJS_DIR
+if (test ! -d $DIST_AIM_PATH) then
+    mkdir -p $DIST_AIM_PATH
+fi
+
+export DIST_AIM_PATH
+export THE_SHARE_OBJS
+export MODULE_ALIAS
+
+if (test "$TARGET" = "setup") \
+        || (test "$TARGET" = "build") \
+        || (test "$TARGET" = "clean")
+then
+    find $MODULE_PATH -type d | grep -v CVS > directories
+
+    while read LINE
+    do
+        if (test -r $LINE/Makefile) then
+            echo "---------  MAKE $TARGET:  [$LINE]"
+
+            cd $LINE
+            make $TARGET
+
+            #echo ""
+        else
+            :
+        fi
+    done < directories
+fi
+
+if (test "$TARGET" = "setup") then
+    TARGET=$SETUP_TALLY
+
+    if (test "$TARGET" = "setup") then
+        DIST_DIR=$APP_DIST_DIR
+        if (test "$DIST_DIR" = "") then
+            DIST_DIR=$BUILD_HOME/dist
+        fi
+        export DIST_DIR
+        if (test ! -d $DIST_DIR) then
+            mkdir -p $DIST_DIR
+        fi
+
+        echo "--------*  MAKE $TARGET:  [$BUILD_HOME]"
+
+        cd $BUILD_HOME
+        make -f make_mod $TARGET
+
+        echo ""
+    fi
+
+    if (test "$AFTER_SETUP" != "") then
+        echo "--------*  AFTER SETUP:"
+        echo "      <$AFTER_SETUP>"
+
+        cd $BUILD_HOME
+        eval "$AFTER_SETUP"
+    fi
+elif (test "$TARGET" = "clean") then
+    echo "--------*  MAKE $TARGET:  [$BUILD_HOME]"
+
+    cd $BUILD_HOME
+    make -f make_mod $TARGET
+
+    echo ""
+fi
+
+cd $BUILD_HOME
+rm directories
+
+echo ""

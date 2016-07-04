@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="gb2312"?>
+<Configure>
+	<!-- 日志相关配置 -->
+	<Log LogLevel = "TRACE" OutPutLogToConsole = "0" />
+	<!--  
+	LogLevel 日志级别 (由低到高 [TRACE] [DEBUG] [INFO] [WARN] [ERROR] [FATAL] [NONE])
+	OutPutLogToConsole 1输出日志信息到控制台, 0输出日志文件 
+	-->
+	
+	<!-- 服务基本配置 -->
+	<Server AppLogInValid="GWGWGWGW" CalThreadNum="4" MaxLinkToHq = "350" 
+		ListenPort="37256" begintime="83000" endtime="200000" ServerCodeNum = "0" />
+	<!--  
+	CalThreadNum 计算线程数
+	MaxLinkToHq  最大行情连接数
+	ListenPort 端口
+	begintime 初始化时间
+	endtime 结束时间
+	ServerCodeNum 服务器编码
+	-->
+	
+	<!-- 行情源数据服务器配置 -->
+	<DataServer Add1="61.151.252.3" Port1 = "22345" Add2="61.151.252.3" Port2 = "22345" 
+		MarketInclude = "SHSZHK"  MaxRecord = "12288"/>
+	<!--  
+	Add1 行情服务器地址
+	Port1  行情服务器端口
+	MarketInclude 支持的市场编码(两位市场缩码拼接)
+	MaxRecord 市场成员的最大记录数
+	-->
+	
+	<!-- 平台代码及归类定义 (不可以用零)
+	 PlatformCode 平台代码(WP7:2 OPHONE_GPHONE:3 IPHONE:4 IPAD:6 IPAD_HIGH_END:7 GPAD:8...)
+	 PlatformClassifiedCode 平台归类代码,不可改动(1:Android 2:Ios 3:Wp7 4:Win8)
+	 NoticeClassifiedCode 公告属性分类代码,与录入平台保持一致(1:IPhone 2:android  3:wp7  4:ipad 5:gpad 6:cmcciphone 7:cmccandroid 8:cmccwp7)
+	-->
+	<PlatformClassified >
+		<OPHONE_GPHONE PlatformCode = "3" PlatformClassifiedCode="1" NoticeClassifiedCode="2" />
+		<WP7 PlatformCode = "2" PlatformClassifiedCode="3" NoticeClassifiedCode="3" />
+		<IPHONE PlatformCode = "4" PlatformClassifiedCode="2" NoticeClassifiedCode="1" />
+		<IPAD PlatformCode = "6" PlatformClassifiedCode="2" NoticeClassifiedCode="4" />
+		<IPAD_HIGH_END PlatformCode = "7" PlatformClassifiedCode="2" NoticeClassifiedCode="4" />
+		<GPAD PlatformCode = "8" PlatformClassifiedCode="1" NoticeClassifiedCode="5" />
+		<WP7CMCC PlatformCode = "9" PlatformClassifiedCode="3" NoticeClassifiedCode="3" />
+		<GPHONECMCC PlatformCode = "10" PlatformClassifiedCode="1" NoticeClassifiedCode="2" />
+		<IPHONECMCC PlatformCode = "11" PlatformClassifiedCode="2" NoticeClassifiedCode="1" />
+		<WIN8_PHONE PlatformCode = "12" PlatformClassifiedCode="4" NoticeClassifiedCode="6" />
+	</PlatformClassified>
+	
+	<!-- 按平台划分的用户配置 -->
+	<PlatformUserSetting >
+		<!-- 配置项说明
+		PlatformClassifiedCode 平台代码归类代码
+		MaxUser 同时容纳该平台的最大用户数
+		UserFileName 该平台用户的用户信息文件
+		MsgHisFileName  历史记录文件名称
+		MaxEWarningHisNum 历史记录保留的最大预警记录数
+		MaxInfoHisNum 历史记录文件保留的最大信息地雷数
+		MaxNoticeHisNum 历史记录文件保留的最大公告数
+		MaxUserWithEWarn 最大设置预警的用户数(不应该超过MaxUser)
+		EWarningFileName 预警记录文件名称
+		MaxEWarnPerUser 每个用户的最大预警记录数
+		DefaultEWarnPerUser 每个用户的默认预警记录数
+		-->
+		
+		<!-- Android平台用户设置 -->
+		<AndroidUserConfig PlatformClassifiedCode="1" MaxUser="10000"  UserFileName="AndroidUser.data" 
+			 MsgHisFileName="AndroidMsg.his" 
+			MaxEWarningHisNum="10" MaxInfoHisNum="3" MaxNoticeHisNum="3" 
+			MaxUserWithEWarn="10000" 
+			EWarningFileName="AndroidEWarning.rec" MaxEWarnPerUser="10" DefaultEWarnPerUser="3" 
+			/>		
+		
+		<!-- Ios平台用户设置 -->
+		<IosUserConfig PlatformClassifiedCode="2" MaxUser="10000"  UserFileName="IosUser.data" 
+			MsgHisFileName="IosMsg.his" 
+			MaxEWarningHisNum="10" MaxInfoHisNum="3" MaxNoticeHisNum="3" 
+			MaxUserWithEWarn="10000" 
+			EWarningFileName="IosEWarning.rec" MaxEWarnPerUser="10" DefaultEWarnPerUser="3" 
+			/>
+		
+		<!-- WP7平台用户设置 -->
+		<Wp7UserConfig PlatformClassifiedCode="3" MaxUser="1000" UserFileName="Wp7User.data" 
+			MsgHisFileName="Wp7Msg.his" 
+			MaxEWarningHisNum="10" MaxInfoHisNum="3" MaxNoticeHisNum="3" 
+			MaxUserWithEWarn="100" 
+			EWarningFileName="Wp7EWarning.rec" MaxEWarnPerUser="10" DefaultEWarnPerUser="3" 
+			/>
+			
+		<!-- Windows8平台用户设置 -->
+		<Win8UserConfig PlatformClassifiedCode="4" MaxUser="10000" UserFileName="Win8User.data" 
+			MsgHisFileName="Win8Msg.his" 
+			MaxEWarningHisNum="10" MaxInfoHisNum="3" MaxNoticeHisNum="3" 
+			MaxUserWithEWarn="1000" 
+			EWarningFileName="Win8EWarning.rec" MaxEWarnPerUser="10" DefaultEWarnPerUser="3" 
+			/>
+	</PlatformUserSetting>
+	
+	<!-- 数据库设置 -->
+	<DataBaseConfig>
+		<!-- 股价预警数据库配置 -->
+		<MySqlDbConfig DbName="PriceAlarmODBC" LogUser = "root" LogPwd = ""  />
+		<!--  
+		DbName ODBC数据源
+		LogUser  用户名
+		LogPwd 密码
+		-->
+		
+		<!-- 信息地雷数据库配置 -->
+		<WapInfoMineConfig DSN="InfoMine" LogUser = "root" LogPwd = "" />
+		<!--  
+		DSN ODBC数据源
+		LogUser  用户名
+		LogPwd 密码
+		-->
+		
+		<!-- 公共消息数据库配置 -->
+		<WapPublicNewsConfig DSN="PublicNews" LogUser = "root" LogPwd = "" />
+		<!--  
+		DSN ODBC数据源
+		LogUser  用户名
+		LogPwd 密码
+		-->	
+	</DataBaseConfig>
+	
+	<!-- 推送服务设置 -->
+	<PushServerConfig>
+		<!--  配置说明
+		ConnectNum 每个计算线程的连接通道数目
+		HostAdd  推送服务器地址
+		HostPort 推送服务器端口
+		CertFile 证书文件
+		KeyFile 秘钥文件
+		PlatformCode 平台代码
+		-->
+		
+		<!-- apple推送服务器配置 -->
+		<IphonePushServ ConnectNum="2" HostAdd = "gateway.push.apple.com" HostPort = "2195" 
+			CertFile = "./pem/iphone_apns-prod-cert.pem" 
+			KeyFile = "./pem/iphone_apns-prod-key-noenc.pem" PlatformCode="4" />
+		
+		
+		<!-- ipad推送服务器配置 -->
+		<IpadPushServ ConnectNum="1" HostAdd = "gateway.push.apple.com" HostPort = "2195" 
+			CertFile = "./pem/ipad_apns-prod-cert.pem" 
+			KeyFile = "./pem/ipad_apns-prod-key-noenc.pem" PlatformCode="6" />
+		
+		<!-- ipad高端版本推送服务器配置 -->
+		<IpadHighEndPushServ ConnectNum="1" HostAdd = "gateway.push.apple.com" HostPort = "2195" 
+			CertFile = "./pem/ipad_highend_apns-prod-cert.pem" 
+			KeyFile = "./pem/ipad_highend_apns-prod-key-noenc.pem" PlatformCode="7" />
+		
+		<!-- wp7推送服务器配置 -->
+		<Wp7PushServ ConnectNum="1" HostAdd = "" HostPort = "80" 
+			CertFile = "" KeyFile = "" PlatformCode="2" />
+		
+		<!-- 手机证券iphone推送服务器配置 -->
+		<IphonecmccPushServ ConnectNum="1" HostAdd = "gateway.push.apple.com" HostPort = "2195" 
+			CertFile = "./pem/cmcc_apns-prod-cert.pem" 
+			KeyFile = "./pem/cmcc_apns-prod-key-noenc.pem" PlatformCode="11" />
+		
+		<!-- 手机证券WP7推送服务器配置 -->
+		<Wp7CmccPushServ ConnectNum="1" HostAdd = "" HostPort = "80" 
+			CertFile = "" KeyFile = "" PlatformCode="9" />
+		
+		<!-- Windows8推送服务器配置 -->
+		<Win8_PHONE ConnectNum="1" HostAdd = "sin.notify.windows.com" HostPort = "443" 
+			CertFile = "ms-app://s-1-15-2-2644357436-1048102706-1399285587-3440890952-2386655777-1891029148-2709127633" 
+			KeyFile = "YlJ/jX/0KNh3MZN6uMjZvD7NM8+0E6mm" PlatformCode="12" />
+
+	</PushServerConfig>
+	
+	<!-- 推送运行配置 -->
+	<PushRuntimeConfig> 
+		<!-- 节点状态整理配置 -->
+		<UserNodeServer CheckStart = "210000" CheckEnd = "225959" SUserDeadTime = "1440" 
+			LUserDeadTime = "14400"  />
+		<!--  
+		CheckStart 整理用户节点状态起始时刻
+		CheckEnd  整理用户节点状态终止时刻
+		SUserDeadTime 短用户死亡时间(单位:分钟 超过此界限标识为死亡 #!!不能小于90秒!!#)
+		LUserDeadTime 判定长间隔用户死亡时间(单位:分钟 超过此界限标识为死亡)
+		-->
+	
+		<EWarningRuntime RunStartTime = "84500" RunEndTime = "200000" 
+			ScanInterval = "10" GetLastestInterval = "15" 
+			RemainValidTime="7" />
+		<!--  
+		RunStartTime		 	预警扫描开始时间
+		RunEndTime			  	预警扫描结束时间
+		ScanInterval			扫描时间间隔(单位秒)
+		GetLastestInterval		获取最新数据的时间间隔(单位秒)
+		RemainValidTime			消息最长有效期(单位天)
+		-->
+		
+		<InfoMineRuntime RunStartTime = "73000" RunEndTime = "180000" 
+			ScanInterval = "297" ProcessUnit = "20000" GetLastestInterval = "307" 
+			RemainValidTime="1" />
+		<!--  
+		RunStartTime		 	信息地雷扫描开始时间
+		RunEndTime			  	信息地雷扫描结束时间
+		ScanInterval			扫描时间间隔(单位秒)
+		ProcessUnit				时间片内处理的最多用户数
+		GetLastestInterval		获取最新数据的时间间隔(单位秒)
+		RemainValidTime			消息最长有效期(单位天)
+		-->
+			
+		<NoticeRuntime RunStartTime = "73000" RunEndTime = "202500" 
+			ScanInterval = "309" ProcessUnit = "20000" GetLastestInterval = "313" 
+			RemainValidTime="7" />
+		<!--  
+		RunStartTime		 	公告扫描开始时间
+		RunEndTime			  	公告扫描结束时间
+		ScanInterval			扫描时间间隔(单位秒)
+		ProcessUnit				时间片内处理的最多用户数
+		GetLastestInterval		获取最新数据的时间间隔(单位秒)
+		RemainValidTime			消息最长有效期(单位天)
+		-->
+	</PushRuntimeConfig>
+	
+	<!-- 推送扩展功能配置 -->
+	<PushExtendConfig>
+		<!-- 自选股信息地雷相关设置 
+		CacheCount 自选股记录的最大数，超过部分将用新的覆盖老的
+		FileName 记录文件的名字
+		StatisticsTimeCount 统计信息地雷个数的时段的个数(不能超过7个)
+		StatisticsTime 统计信息地雷个数的时段，新添加以"|"分割
+		ExcludeCodeCount 排除统计的证券代码个数
+		ExcludeCode 排除统计的证券代码，新添加以"|"分割
+		-->
+		<SelfSelectStockInfomineConfig CacheCount = "20" FileName = "SelfSelect.rec" 
+			StatisticsTimeCount = "2" StatisticsTime = "81000|131000"  
+			ExcludeCodeCount = "2" ExcludeCode = "SH000001|SZ399001"  >
+		</SelfSelectStockInfomineConfig>
+	</PushExtendConfig>
+	
+</Configure>

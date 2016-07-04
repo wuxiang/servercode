@@ -1,0 +1,55 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+AIM_PATH	Makefile	/^AIM_PATH    = $(DIST_AIM_PATH)$/;"	m
+CC	Makefile	/^CC          = ${CC_COMPILER} ${CC_CFLAGS} ${CC_IPATH}$/;"	m
+CP	Makefile	/^CP          = cp$/;"	m
+DOMAttributes	libxml_interface.h	/^	class DOMAttributes	{$/;"	c	namespace:LibXml
+DOMAttributesPtr	libxml_interface.h	/^	typedef std::auto_ptr<DOMAttributes> DOMAttributesPtr;$/;"	t	namespace:LibXml
+DOMDocument	libxml_interface.h	/^	class DOMDocument {$/;"	c	namespace:LibXml
+DOMDocumentPtr	libxml_interface.h	/^	typedef std::auto_ptr<DOMDocument> DOMDocumentPtr;$/;"	t	namespace:LibXml
+DOMNode	libxml_interface.h	/^	class DOMNode {$/;"	c	namespace:LibXml
+DOMNodePtr	libxml_interface.h	/^	typedef std::auto_ptr<DOMNode> DOMNodePtr;$/;"	t	namespace:LibXml
+LB	Makefile	/^LB          = ar -r$/;"	m
+LIBXML_DOMAttributes	libxml_parser.h	/^		LIBXML_DOMAttributes(xmlNodePtr pNode)$/;"	f	class:LibXml::LIBXML_DOMAttributes
+LIBXML_DOMAttributes	libxml_parser.h	/^	class LIBXML_DOMAttributes : public DOMAttributes {$/;"	c	namespace:LibXml
+LIBXML_DOMDocument	libxml_parser.cpp	/^  LIBXML_DOMDocument::LIBXML_DOMDocument() throw( const char* )$/;"	f	class:LibXml::LIBXML_DOMDocument
+LIBXML_DOMDocument	libxml_parser.h	/^	class LIBXML_DOMDocument : public DOMDocument$/;"	c	namespace:LibXml
+LIBXML_DOMNode	libxml_parser.h	/^		LIBXML_DOMNode( xmlNodePtr pNode )$/;"	f	class:LibXml::LIBXML_DOMNode
+LIBXML_DOMNode	libxml_parser.h	/^	class LIBXML_DOMNode : public DOMNode {$/;"	c	namespace:LibXml
+LN	Makefile	/^LN          = ${CC_COMPILER}$/;"	m
+LibXml	libxml_interface.h	/^namespace LibXml {$/;"	n
+LibXml	libxml_parser.cpp	/^namespace LibXml$/;"	n	file:
+LibXml	libxml_parser.h	/^namespace LibXml {$/;"	n
+MV	Makefile	/^MV          = mv$/;"	m
+NEW_OBJS	Makefile	/^NEW_OBJS    = libxml_parser.o $/;"	m
+PC	Makefile	/^PC          = ${PC_COMPILER} ${PC_FLAGS}  ${PC_IPATH} ${PC_LPATH}$/;"	m
+RM	Makefile	/^RM          = rm -f$/;"	m
+SHARE_OBJS	Makefile	/^SHARE_OBJS  =$/;"	m
+TARGET	Makefile	/^TARGET      = _xml$/;"	m
+_LIBXML_INTERFACE_H	libxml_interface.h	2;"	d
+_LIBXML_PARSER_H	libxml_parser.h	2;"	d
+get	libxml_parser.cpp	/^  bool LIBXML_DOMAttributes::get( const std::string& name, std::string& value )$/;"	f	class:LibXml::LIBXML_DOMAttributes
+getAttributes	libxml_parser.cpp	/^  DOMAttributesPtr LIBXML_DOMNode::getAttributes()$/;"	f	class:LibXml::LIBXML_DOMNode
+getFirstChildNode	libxml_parser.cpp	/^  DOMNodePtr LIBXML_DOMNode::getFirstChildNode()$/;"	f	class:LibXml::LIBXML_DOMNode
+getName	libxml_parser.cpp	/^  std::string LIBXML_DOMNode::getName()$/;"	f	class:LibXml::LIBXML_DOMNode
+getNextSiblingNode	libxml_parser.cpp	/^  DOMNodePtr LIBXML_DOMNode::getNextSiblingNode()$/;"	f	class:LibXml::LIBXML_DOMNode
+getNode	libxml_parser.cpp	/^  DOMNodePtr LIBXML_DOMDocument::getNode( const std::string& XPath )$/;"	f	class:LibXml::LIBXML_DOMDocument
+getText	libxml_parser.cpp	/^  std::string LIBXML_DOMNode::getText()$/;"	f	class:LibXml::LIBXML_DOMNode
+getType	libxml_parser.cpp	/^  const int LIBXML_DOMNode::getType()$/;"	f	class:LibXml::LIBXML_DOMNode
+load	libxml_parser.cpp	/^  bool LIBXML_DOMDocument::load( const std::string& url )$/;"	f	class:LibXml::LIBXML_DOMDocument
+load	libxml_parser.cpp	/^  bool LIBXML_DOMDocument::load( std::istream& stream )$/;"	f	class:LibXml::LIBXML_DOMDocument
+m_pDoc	libxml_parser.h	/^		xmlDocPtr m_pDoc;$/;"	m	class:LibXml::LIBXML_DOMDocument
+m_pNode	libxml_parser.h	/^		xmlNodePtr m_pNode;$/;"	m	class:LibXml::LIBXML_DOMAttributes
+m_pNode	libxml_parser.h	/^		xmlNodePtr m_pNode;$/;"	m	class:LibXml::LIBXML_DOMNode
+map	libxml_interface.h	/^		typedef std::map<std::string, std::string> map;$/;"	t	class:LibXml::DOMAttributes
+toMap	libxml_parser.cpp	/^  DOMAttributes::map LIBXML_DOMAttributes::toMap()$/;"	f	class:LibXml::LIBXML_DOMAttributes
+xml	libxml_parser.cpp	/^  bool LIBXML_DOMDocument::xml( std::ostream& out )$/;"	f	class:LibXml::LIBXML_DOMDocument
+~DOMAttributes	libxml_interface.h	/^		virtual ~DOMAttributes() {}$/;"	f	class:LibXml::DOMAttributes
+~DOMDocument	libxml_interface.h	/^		virtual ~DOMDocument() {}$/;"	f	class:LibXml::DOMDocument
+~DOMNode	libxml_interface.h	/^		virtual ~DOMNode() {}$/;"	f	class:LibXml::DOMNode
+~LIBXML_DOMDocument	libxml_parser.cpp	/^  LIBXML_DOMDocument::~LIBXML_DOMDocument()$/;"	f	class:LibXml::LIBXML_DOMDocument
+~LIBXML_DOMNode	libxml_parser.h	/^		~LIBXML_DOMNode() {}$/;"	f	class:LibXml::LIBXML_DOMNode

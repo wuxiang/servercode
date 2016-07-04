@@ -1,0 +1,124 @@
+说明:
+
+一.主要功能:
+
+1. 股价预警推送
+
+	移动终端用户设置股票预警(priceAlarm)相关信息(股价，涨幅，换手等)并保存在服务器(PushServer),
+	一旦股票信息符合用户设置,服务器发送(push notification)推送消息(Android，iOS，WindowsPhone)
+
+2. 公共消息推送
+
+	大智慧活动或新闻消息推送到移动终端
+	支持的条件：平台、版本及注册时间
+	
+3. 自选股信息地雷推送
+    发送用户上传的自选股信息地雷的统计是实时消息，详见<自选股信息地雷推送>.
+    每天必须保证至少执行一次用户自选股的信息地雷个数的统计，而后，在盘中产生的信息地雷会实时推送
+    给用户。
+
+
+二.程序结构
+
+PushServer/build	编译选项目录
+PushServer/home		配置文件目录
+PushServer/src		程序源码目录
+PushServer/test		测试用例目录
+
+三.配置文件
+
+PushServer/home/config.xml		用于服务器配置
+PushServer/home/odbc.ini		用于创建OBDC DSN
+PushServer/home/dbbuild.sql 	用于数据库和表的创建
+PushServer/home/pem				苹果推送服务证书
+
+四.安装运行步骤
+
+1. 操作系统
+
+	开发环境版本
+		LSB Version:    :core-3.0-ia32:core-3.0-noarch:graphics-3.0-ia32:graphics-3.0-noarch
+		Distributor ID: RedHatEnterpriseAS
+		Description:    Red Hat Enterprise Linux AS release 4 (Nahant Update 4)
+		Release:        4
+		Codename:       NahantUpdate4
+	
+		
+	测试环境版本
+		LSB Version:    :core-3.1-ia32:core-3.1-noarch:graphics-3.1-ia32:graphics-3.1-noarch
+		Distributor ID: RedHatEnterpriseServer
+		Description:    Red Hat Enterprise Linux Server release 5.5 (Tikanga)
+		Release:        5.5
+		Codename:       Tikanga
+	
+	正式发布环境
+		需要 64 位环境
+		
+2. gcc
+
+	开发环境版本
+		3.4.6 20060404 (Red Hat 3.4.6-3)
+	测试环境版本
+		4.1.2 20080704 (Red Hat 4.1.2-52)
+	正式发布环境
+		
+
+3. 使用的第三方库
+	(1) OpenSSL
+	
+		开发环境版本
+			openssl-0.9.7a-43.10
+			openssl-devel-0.9.7a-43.10
+		测试环境版本
+			openssl-0.9.8e-12.el5_4.6
+			openssl-devel-0.9.8e-12.el5_4.6	
+		正式发布环境
+			
+			
+	(2) libxml
+	
+		开发环境版本
+			libxml2-2.6.16-6
+			libxml2-devel-2.6.16-6
+		测试环境版本
+			libxml2-2.6.26-2.1.2.8
+			libxml2-devel-2.6.26-2.1.2.8
+		正式发布环境	
+			
+4. 安装MySQL数据库
+
+	开发环境版本 
+		5.1.34-community MySQL Community Server (GPL)
+	测试环境版本 
+		5.0.95 Source distribution
+	正式发布环境
+		
+	
+5. 安装unixODBC
+
+	开发环境版本 
+		unixODBC-kde-2.2.11-1.RHEL4.1
+		unixODBC-2.2.11-1.RHEL4.1
+	测试环境版本 
+		unixODBC-2.2.11-10.el5
+		unixODBC-libs-2.2.11-10.el5
+		unixODBC-devel-2.2.11-10.el5
+	正式发布环境
+		
+		
+6. 通过dbbuild.sql创建数据库和表(mysql环境)
+7. 创建odbc.ini(见PushServer/home/odbc.ini)
+8. 进入到PushServer/build目录，运行 ./build setup 编译源代码，如果无法运行请给build文件添加执行权限 chmod u+x build
+9. 编译完成后会在当前用户目录下生成dist目录
+10. 进入dist/PushServer目录，运行 ./pushserv startup 启动程序
+11. 关闭程序使用 ./pushserv shutdown -FPID 或者 pkill pushserv
+
+五.与其他系统的配合
+
+数据来源由行情服务器提供，在行情服务器上配置即可
+
+
+六.安全
+
+
+七.变更
