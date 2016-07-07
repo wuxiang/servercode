@@ -1,0 +1,29 @@
+<configuration>
+    <application>
+        <service>
+            <name>gateway</name>
+            <NO>1</NO>
+            <timeout>10</timeout>
+            <connection>5</connection>
+            <servers>
+                <server>172.16.20.25</server>
+            </servers>
+        </service>
+    
+        <service>
+            <name>kaiyang</name>
+            <NO>2</NO>
+            <timeout>5</timeout>
+            <connection>5</connection>
+            <servers>
+                <server>172.16.19.181</server>
+                <server>172.16.19.173</server>
+                <server>172.16.19.162</server>
+            </servers>
+        </service>
+    </application>
+
+    <gateway>
+        <threads>10</threads>
+    </gateway>
+</configuration>
