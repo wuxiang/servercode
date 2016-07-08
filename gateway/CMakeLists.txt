@@ -39,8 +39,9 @@ set(CONNECTION_DIR ${PROJECT_SOURCE_DIR}/src/connection/)
 set(LOG_DIR ${PROJECT_SOURCE_DIR}/src/log/)
 set(NETWORK_DIR ${PROJECT_SOURCE_DIR}/src/network/)
 set(SERVER_DIR ${PROJECT_SOURCE_DIR}/src/server/)
-set(SINGLETON_DIR ${PROJECT_SOURCE_DIR}/src/singleton)
+set(SINGLETON_DIR ${PROJECT_SOURCE_DIR}/src/singleton/)
 set(TIMER_DIR ${PROJECT_SOURCE_DIR}/src/timer/)
+set(GLOBAL_DIR ${PROJECT_SOURCE_DIR}/src/global/)
 
 include_directories(${CACHE_DIR})
 include_directories(${CONFIG_DIR})
@@ -50,6 +51,7 @@ include_directories(${NETWORK_DIR})
 include_directories(${SERVER_DIR})
 include_directories(${SINGLETON_DIR})
 include_directories(${TIMER_DIR})
+include_directories(${GLOBAL_DIR})
 
 FILE(GLOB_RECURSE CACHE_SRC  ${CACHE_DIR}/*.cpp)
 FILE(GLOB_RECURSE CONFIG_SRC  ${CONFIG_DIR}/*.cpp)
@@ -59,6 +61,7 @@ FILE(GLOB_RECURSE NETWORK_SRC  ${NETWORK_DIR}/*.cpp)
 FILE(GLOB_RECURSE SERVER_SRC  ${SERVER_DIR}/*.cpp)
 FILE(GLOB_RECURSE SINGLETON_SRC  ${SINGLETON_DIR}/*.cpp)
 FILE(GLOB_RECURSE TIMER_SRC  ${TIMER_DIR}/*.cpp)
+FILE(GLOB_RECURSE GLOBAL_SRC  ${GLOBAL_DIR}/*.cpp)
 
 # add library
 set(BOOST_INCLUDE /home/dba/boost/boost_1_61/include/)
@@ -78,7 +81,8 @@ add_executable(Gateway  ${SERVER_SRC}
                         ${LOG_SRC}
                         ${NETWORK_SRC}
                         ${SINGLETON_SRC}
-                        ${TIMER_SRC})
+                        ${TIMER_SRC}
+                        ${GLOBAL_DIR})
 
 #target_link_libraries(Gateway
 #                      ${BOOST_SYSTEM}

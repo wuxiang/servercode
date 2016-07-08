@@ -4,6 +4,7 @@
 */
 
 #include "Config.h"
+#include <unistd.h>
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
@@ -22,6 +23,11 @@ Config::~Config() {
 }
 
 void Config::init(const std::string& filename) {
+    fprintf(stderr, "Config::init\n");
+    if (access(filename.c_str(), F_OK)) {
+        return;
+    }
+
     std::map<std::string, std::vector<std::string> >   data;
     std::ifstream in(filename.c_str(), std::ios::in);
     if(in.fail()){

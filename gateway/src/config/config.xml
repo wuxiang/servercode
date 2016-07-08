@@ -1,5 +1,6 @@
 <configuration>
     <application>
+        <!--application's server configuration-->
         <service>
             <name>gateway</name>
             <NO>1</NO>
@@ -23,6 +24,7 @@
         </service>
     </application>
 
+    <!--网关的配置信息-->
     <gateway>
         <threads>10</threads>
     </gateway>
