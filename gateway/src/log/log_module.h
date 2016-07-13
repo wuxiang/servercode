@@ -43,7 +43,6 @@ namespace Elephants
         static LOG_LEVEL  reflex(const std::string& level);
         static std::string today();
 
-
     private:
 	    CLog();
 	    ~CLog();
@@ -55,7 +54,7 @@ namespace Elephants
 	    class  WHanler
 	    {
 	    public:
-            WHanler(const std::string&  mod, const LOG_LEVEL lev);
+            WHanler(const std::string&  mod, const LOG_LEVEL lev, const int backup = 10);
 		    void inputContent(const LOG_LEVEL lev, const std::string& content);
             void setLogLevel(const LOG_LEVEL lev);
 
@@ -70,8 +69,10 @@ namespace Elephants
 
 		    std::string  direct;  // 目录
 		    std::string  delimiter; //分隔符
+            std::string  timestamp; // 当前文件的时间戳
 		    std::string  filename;  //文件名
-            std::string  timestamp;
+            int          backup;    // 保留日志文件天数, -1表示永远不删除
+
 		    boost::mutex  mtx;
 		    std::fstream  iFile;
 	    };

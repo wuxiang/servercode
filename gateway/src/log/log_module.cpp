@@ -95,7 +95,7 @@ namespace Elephants
 	    std::vector<std::string>::const_iterator it = module.begin();
 	    while (it != module.end())
 	    {
-            std::string  module("Hybrid");
+            std::string  mod("Hybrid");
             std::string  level("DEBUG");
 
 		    std::string::size_type  pos = it->find(".");
@@ -103,15 +103,16 @@ namespace Elephants
 		    {
 			    try
 			    {
-                    module = boost::lexical_cast<std::string>(it->substr(0,pos));
+                    mod = boost::lexical_cast<std::string>(it->substr(0,pos));
                     level = boost::lexical_cast<std::string>(it->substr(pos + 1));
 			    }
 			    catch (const boost::bad_lexical_cast&)
 			    {
+                    return false;
 			    }
 		    }
 
-            inputHandler(module, level);
+            inputHandler(mod, level);
 		    ++it;
 	    }
 
@@ -130,7 +131,7 @@ namespace Elephants
 
 
     /*****************module handle class***************************/
-    CLog::WHanler::WHanler(const std::string&  mod, const LOG_LEVEL lev): level(lev), module(mod), isInit(true)
+    CLog::WHanler::WHanler(const std::string&  mod, const LOG_LEVEL lev, const int backup): isInit(true), level(lev), module(mod), backup(backup)
     {
         direct += module + "_Log";
     #if defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64)
@@ -149,10 +150,12 @@ namespace Elephants
 
         if (isInit)
         {
+            std::string td = CLog::today();
+            timestamp = td;
+
             filename.assign("LOG");
-            filename += CLog::today();
+            filename += td;
             filename += ".log";
-            timestamp = CLog::today();
 
             if (isInit)
             {
@@ -163,6 +166,13 @@ namespace Elephants
                 {
                     isInit = false;
                 }
+            }
+
+            // delete  old log file
+            if (backup > 0) 
+            {
+                std::string df = direct + delimiter + "LOG" + boost::lexical_cast<std::string>(boost::lexical_cast<int>(timestamp) - backup) + ".log";
+                remove(df.c_str());
             }
         }
     }
@@ -192,10 +202,9 @@ namespace Elephants
 
 	    if (!isInit)
 	    {
-		    filename.assign("LOG");
-            filename += CLog::today();
-		    filename += ".log";
-            timestamp = CLog::today();
+            std::string td = CLog::today();
+            timestamp = td;
+            filename = "LOG" + filename + td + ".log";
 
 		    // open file
 		    std::string absolutePath(direct + delimiter + filename);
@@ -208,6 +217,13 @@ namespace Elephants
 		    {
 			    isInit = true;
 		    }
+
+            // delete old log file
+            if (backup > 0) 
+            {
+                std::string df = direct + delimiter + "LOG" + boost::lexical_cast<std::string>(boost::lexical_cast<int>(timestamp) - backup) + ".log";
+                remove(df.c_str());
+            }
 	    }
 
 	    if (isInit)

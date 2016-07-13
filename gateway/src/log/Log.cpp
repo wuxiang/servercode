@@ -19,26 +19,21 @@ using namespace boost::filesystem;
 
 Log *Log::instance_ = NULL;
 
-Log*
-Log::Instance()
-{
+Log* Log::Instance() {
     if(NULL == instance_){
         instance_ = new Log;
     }
     return instance_;
 }
 
-Log::~Log()
-{
+Log::~Log() {
     if(NULL != instance_){
         oFile.flush();
         delete instance_;
     }
 }
 
-void
-Log::Output(const char* fmt,...)
-{
+void Log::Output(const char* fmt,...) {
     int size=100;
     string str;
     while (1) {
@@ -58,9 +53,7 @@ Log::Output(const char* fmt,...)
     Output(str);
 }
 
-void
-Log::Output(std::string& str)
-{
+void Log::Output(std::string& str) {
     time_t timeval;
     const tm    *timeinfo;
 
@@ -104,9 +97,7 @@ Log::Output(std::string& str)
     //cout << time << ']' << str << endl;
 }
 
-void 
-Log::OutputErr(const char* fmt,...)
-{
+void Log::OutputErr(const char* fmt, ...) {
     int size=100;
     string str;
     while (1) {
@@ -126,9 +117,7 @@ Log::OutputErr(const char* fmt,...)
     OutputErr(str);
 }
 
-void
-Log::OutputErr(std::string& str)
-{
+void Log::OutputErr(std::string& str) {
     time_t timeval;
     const tm    *timeinfo;
 

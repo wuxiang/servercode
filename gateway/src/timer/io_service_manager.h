@@ -13,6 +13,7 @@ namespace Elephants
         bool  init(const std::size_t  sz);
         boost::asio::io_service&  get_io_service();
         void run();
+        void stop();
 
     private:
         io_service_manager();

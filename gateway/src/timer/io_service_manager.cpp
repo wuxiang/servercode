@@ -25,6 +25,12 @@ namespace Elephants
         return true;
     }
 
+    void io_service_manager::stop() {
+        if (pool) {
+            pool->stop();
+        }
+    }
+
     void io_service_manager::run()
     {
         if (pool)

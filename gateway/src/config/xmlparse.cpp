@@ -35,7 +35,7 @@ void XMLParse::init(const std::string& filename) {
         }
     }
 
-    m_config["gateway"] = gcf;
+    m_config[(gcf.get<0>())["NO"]] = gcf;
 
     // get application
     boost::property_tree::ptree application = pt.get_child("configuration.application");
