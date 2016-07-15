@@ -1,20 +1,22 @@
-#ifndef SENDBUFFER_H_
-#define SENDBUFFER_H_
+#ifndef SERVERBUFFER_H_
+#define SERVERBUFFER_H_
 #include <stdlib.h>
 #include <string.h>
 
-struct  SenderBuffer {
+#include <boost/shared_ptr.hpp>
+
+struct  ServerBuffer {
     std::size_t   bufferSize;
     std::size_t   start;
     std::size_t   pos;
     void*         buffer;
 
-    SenderBuffer(const std::size_t& sz): bufferSize(sz), start(0), pos(0) {
+    ServerBuffer(const std::size_t& sz): bufferSize(sz), start(0), pos(0) {
         buffer = malloc(sz);
         bzero(buffer, sz);
     }
 
-    SenderBuffer(const SenderBuffer& buf) {
+    ServerBuffer(const ServerBuffer& buf) {
         // mem allocate
         bufferSize = buf.bufferSize;
         start = buf.start;
@@ -26,7 +28,7 @@ struct  SenderBuffer {
         memcpy(buffer, buf.buffer, pos);
     }
 
-    const SenderBuffer& operator=(const SenderBuffer& buf) {
+    const ServerBuffer& operator=(const ServerBuffer& buf) {
         if (this != &buf) {
             // mem allocate
             bufferSize = buf.bufferSize;
@@ -42,28 +44,45 @@ struct  SenderBuffer {
         return *this;
     }
 
-    ~SenderBuffer() {
+    ~ServerBuffer() {
         if (buffer) {
             delete []((char*)buffer);
         }
     }
 
+    bool resize(const std::size_t bs) {
+        std::size_t sz = (bs / bufferSize  + 1) * bufferSize; 
+        if (sz > this->bufferSize ) {
+            // mem allocate
+            void* tBuffer = realloc(buffer, bufferSize);
+            if (!tBuffer) {
+                return false;
+            }
+            buffer = tBuffer;
+            bufferSize = sz;
+
+            bzero((void*)((char*)buffer + pos), bufferSize - pos);
+        }
+    }
+
     bool moveData() {
         if (0 != start) {
-            memmove(buffer, buffer + start, pos - start);
+            memmove(buffer, (void*)((char*)buffer + start), pos - start);
             start = 0;
             pos = pos - start;
 
-            bzero(buffer + pos, bufferSize - pos);
+            bzero((void*)((char*)buffer + pos), bufferSize - pos);
         }
 
         return true;
     }
 
 private:
-    SenderBuffer() {
+    ServerBuffer() {
     }
 };
 
-#endif //SENDBUFFER_H_
+typedef boost::shared_ptr<ServerBuffer>    ServerBufferPtr;
+
+#endif //SERVERBUFFER_H_
 

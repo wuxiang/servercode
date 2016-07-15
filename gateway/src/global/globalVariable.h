@@ -1,0 +1,7 @@
+#ifndef GLOBALVARIABLE_H_
+#define GLOBALVARIABLE_H_
+
+const int EPOLL_SIZE = 1024;
+
+#endif //GLOBALVARIABLE_H_
+

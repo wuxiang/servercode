@@ -8,25 +8,38 @@
 
 #include <boost/noncopyable.hpp>
 #include <boost/thread/shared_mutex.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
+
+#include "myUtil.h"
+#include "globalVariable.h"
+#include "serverBuffer.h"
 
 class WorkThreads: public boost::noncopyable {
 public:
     WorkThreads(const std::size_t& ids);
     ~WorkThreads();
-    bool addFd(const int fd);
+    bool addFd(int fd);
+
+    bool stop();
 
 private:
     WorkThreads();
     void init();
-    void run(void* object);
+    void run();
 
 private:
-    std::size_t           m_id;
-    pthread_t             m_pid;
+    std::size_t                        m_id;
+    boost::thread                      m_thread;
+    int                                m_epfd;
 
-    boost::shared_mutex   m_mtx;
-    int                   m_epfd;
-    std::set<int>         m_listenFds;
+    volatile bool                      m_runing;
+    std::map<int, ServerBufferPtr>     m_recvBuffer;
+
+
+    boost::shared_mutex                m_mtx;
+    std::set<int>                      m_listenFds;
 };
 
 #endif //WORKTHREADS_H_

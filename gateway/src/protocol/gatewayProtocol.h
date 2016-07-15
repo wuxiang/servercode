@@ -1,5 +1,8 @@
 #ifndef  GATEWAYPROTOCOL_H_
 #define  GATEWAYPROTOCOL_H_
+#include <stdint.h>
+
+#include <string>
 
 class GatewayProtocol {
 public:

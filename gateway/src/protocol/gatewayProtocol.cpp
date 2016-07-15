@@ -1,6 +1,6 @@
 #include "gatewayProtocol.h"
 
-GatewayProtocol::GatewayProtocol(): length(0),version(0) {
+GatewayProtocol::GatewayProtocol(): length(0),svrNO(0) {
 }
 
 GatewayProtocol::GatewayProtocol(const GatewayProtocol&  val) {
@@ -27,6 +27,10 @@ AppSvrProtocol::AppSvrProtocol() {
 }
 
 AppSvrProtocol::AppSvrProtocol(const AppSvrProtocol& val) {
+    length = val.length;
+    sequence = val.sequence;
+    version = val.version;
+    body = val.body;
 }
 
 AppSvrProtocol::~AppSvrProtocol() {
@@ -34,10 +38,10 @@ AppSvrProtocol::~AppSvrProtocol() {
 
 const AppSvrProtocol& AppSvrProtocol::operator=(const AppSvrProtocol& val) {
     if (this != & val) {
-    uint32_t       length;
-    uint64_t       sequence;
-    uint32_t       version;
-    std::string    body;
+        length = val.length;
+        sequence = val.sequence;
+        version = val.version;
+        body = val.body;
     }
 
     return *this;

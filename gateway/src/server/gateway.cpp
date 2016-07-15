@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "CallGlobal.h"
 #include "io_service_manager.h"
+#include "configSingleton.h"
 #include "server.h"
 
 void signalFunc(const int sig) {

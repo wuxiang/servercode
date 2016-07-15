@@ -35,33 +35,39 @@ include_directories(${LOCAL_LIB64_DIR})
 # manager project[gateway] directory tree
 set(CACHE_DIR ${PROJECT_SOURCE_DIR}/src/cache/)
 set(CONFIG_DIR ${PROJECT_SOURCE_DIR}/src/config/)
-set(CONNECTION_DIR ${PROJECT_SOURCE_DIR}/src/connection/)
 set(LOG_DIR ${PROJECT_SOURCE_DIR}/src/log/)
 set(NETWORK_DIR ${PROJECT_SOURCE_DIR}/src/network/)
 set(SERVER_DIR ${PROJECT_SOURCE_DIR}/src/server/)
 set(SINGLETON_DIR ${PROJECT_SOURCE_DIR}/src/singleton/)
 set(TIMER_DIR ${PROJECT_SOURCE_DIR}/src/timer/)
 set(GLOBAL_DIR ${PROJECT_SOURCE_DIR}/src/global/)
+set(UTIL_DIR ${PROJECT_SOURCE_DIR}/src/util/)
+set(PROTOCOL_DIR ${PROJECT_SOURCE_DIR}/src/protocol/)
+set(SIGNAL_DIR ${PROJECT_SOURCE_DIR}/src/signal/)
 
 include_directories(${CACHE_DIR})
 include_directories(${CONFIG_DIR})
-include_directories(${CONNECTION_DIR})
 include_directories(${LOG_DIR})
 include_directories(${NETWORK_DIR})
 include_directories(${SERVER_DIR})
 include_directories(${SINGLETON_DIR})
 include_directories(${TIMER_DIR})
 include_directories(${GLOBAL_DIR})
+include_directories(${UTIL_DIR})
+include_directories(${PROTOCOL_DIR})
+include_directories(${SIGNAL_DIR})
 
 FILE(GLOB_RECURSE CACHE_SRC  ${CACHE_DIR}/*.cpp)
 FILE(GLOB_RECURSE CONFIG_SRC  ${CONFIG_DIR}/*.cpp)
-FILE(GLOB_RECURSE CONNECTION_SRC  ${CONNECTION_DIR}/*.cpp)
 FILE(GLOB_RECURSE LOG_SRC  ${LOG_DIR}/*.cpp)
 FILE(GLOB_RECURSE NETWORK_SRC  ${NETWORK_DIR}/*.cpp)
 FILE(GLOB_RECURSE SERVER_SRC  ${SERVER_DIR}/*.cpp)
 FILE(GLOB_RECURSE SINGLETON_SRC  ${SINGLETON_DIR}/*.cpp)
 FILE(GLOB_RECURSE TIMER_SRC  ${TIMER_DIR}/*.cpp)
 FILE(GLOB_RECURSE GLOBAL_SRC  ${GLOBAL_DIR}/*.cpp)
+FILE(GLOB_RECURSE UTIL_SRC  ${UTIL_DIR}/*.cpp)
+FILE(GLOB_RECURSE PROTOCOL_SRC ${PROTOCOL_DIR}/*.cpp)
+FILE(GLOB_RECURSE SIGNAL_SRC ${SIGNAL_DIR}/*.cpp)
 
 # add library
 set(BOOST_INCLUDE /home/dba/boost/boost_1_61/include/)
@@ -77,12 +83,14 @@ link_directories( . /home/dba/boost/boost_1_61/lib/)
 add_executable(Gateway  ${SERVER_SRC}
                         ${CACHE_SRC}
                         ${CONFIG_SRC}
-                        ${CONNECTION_SRC}
                         ${LOG_SRC}
                         ${NETWORK_SRC}
                         ${SINGLETON_SRC}
                         ${TIMER_SRC}
-                        ${GLOBAL_DIR})
+                        ${GLOBAL_SRC}
+                        ${UTIL_SRC}
+                        ${PROTOCOL_SRC}
+                        ${SIGNAL_SRC})
 
 #target_link_libraries(Gateway
 #                      ${BOOST_SYSTEM}

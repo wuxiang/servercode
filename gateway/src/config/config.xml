@@ -31,5 +31,6 @@
         <asio>1</asio>
         <host>172.16.20.25</host>
         <port>16000</port>
+        <protocol></protocol>
     </gateway>
 </configuration>
