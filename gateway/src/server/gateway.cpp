@@ -17,7 +17,13 @@ int main(int argc, char* argv[]) {
 
     char*  a = new char[20];
     void* b = (void*)a;
-    fprintf(stderr, "%p", b);
+    fprintf(stderr, "%p\n", b);
+
+    fprintf(stderr, "object: %lu\n", sizeof(class WorkBase));
+
+    fprintf(stderr, "char*: %lu\n", sizeof(char*));
+    fprintf(stderr, "char**: %lu\n", sizeof(char**));
+    fprintf(stderr, "int*: %lu\n", sizeof(int*));
 
     Elephants::io_service_manager::instance().run();
 

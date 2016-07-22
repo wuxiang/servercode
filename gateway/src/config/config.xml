@@ -32,5 +32,7 @@
         <host>172.16.20.25</host>
         <port>16000</port>
         <protocol></protocol>
+
+        <AppThreads>10</AppThreads>
     </gateway>
 </configuration>

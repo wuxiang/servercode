@@ -15,14 +15,18 @@
 #include "myUtil.h"
 #include "globalVariable.h"
 #include "serverBuffer.h"
+#include "workBase.h"
+#include "mailBox.h"
 
-class WorkThreads: public boost::noncopyable {
+
+class WorkThreads: public boost::noncopyable, public WorkBase {
 public:
     WorkThreads(const std::size_t& ids);
-    ~WorkThreads();
-    bool addFd(int fd);
+    virtual ~WorkThreads();
+    virtual bool addFd(int fd);
+    virtual bool stop();
 
-    bool stop();
+    void  senderCallback(MailBox&  mail, ServerBufferPtr&  buf);
 
 private:
     WorkThreads();
@@ -30,16 +34,16 @@ private:
     void run();
 
 private:
-    std::size_t                        m_id;
-    boost::thread                      m_thread;
-    int                                m_epfd;
+    boost::thread                                          m_thread;
+    int                                                    m_epfd;
 
-    volatile bool                      m_runing;
-    std::map<int, ServerBufferPtr>     m_recvBuffer;
+    volatile bool                                          m_runing;
+    std::map<int, ServerBufferPtr>                         m_recvBuffer;
 
 
-    boost::shared_mutex                m_mtx;
-    std::set<int>                      m_listenFds;
+    boost::shared_mutex                                    m_mtx;
+    std::set<int>                                          m_listenFds;
+    std::map<int, std::map<uint64_t, ServerBufferPtr> >   m_sendBuffer;
 };
 
 #endif //WORKTHREADS_H_
