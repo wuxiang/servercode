@@ -6,13 +6,13 @@
 
 class AppBase {
 public:
-    AppBase(const __uint32_t service, const std::size_t& id): m_service(service), m_id(id) {
+    AppBase(const uint16_t service, const std::size_t& id): m_service(service), m_id(id) {
     }
 
     virtual ~AppBase() {
     }
 
-    __uint32_t  getServiceName() {
+    uint16_t  getServiceName() {
         return m_service;
     }
 
@@ -21,7 +21,7 @@ public:
     }
 
 protected:
-    __uint32_t   m_service;
+    uint16_t      m_service;
     std::size_t   m_id;
 };
 

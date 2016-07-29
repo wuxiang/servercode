@@ -17,6 +17,7 @@
 #include "serverBuffer.h"
 #include "workBase.h"
 #include "mailBox.h"
+#include "sequenceInstance.h"
 
 
 class WorkThreads: public boost::noncopyable, public WorkBase {
@@ -32,18 +33,19 @@ private:
     WorkThreads();
     void init();
     void run();
+    void shutdownfd(const int fd);
 
 private:
     boost::thread                                          m_thread;
     int                                                    m_epfd;
 
     volatile bool                                          m_runing;
-    std::map<int, ServerBufferPtr>                         m_recvBuffer;
+    std::map<int, ServerBufferPtr>                         m_recvBuffer;    // 接收数据的缓存的生存周期和套接字一样
 
 
     boost::shared_mutex                                    m_mtx;
     std::set<int>                                          m_listenFds;
-    std::map<int, std::map<uint64_t, ServerBufferPtr> >   m_sendBuffer;
+    std::map<int, std::map<uint64_t, ServerBufferPtr> >   m_sendBuffer;    // 发送缓存的生存周期和请求有关
 };
 
 #endif //WORKTHREADS_H_

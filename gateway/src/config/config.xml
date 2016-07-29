@@ -2,8 +2,9 @@
     <application>
         <!--application's server configuration-->
         <service>
-            <name>gateway</name>
+            <name>tableau</name>
             <NO>1</NO>
+            <version>1</version>
             <timeout>10</timeout>
             <connection>5</connection>
             <servers>
@@ -14,6 +15,7 @@
         <service>
             <name>kaiyang</name>
             <NO>2</NO>
+            <version>1</version>
             <timeout>5</timeout>
             <connection>5</connection>
             <servers>

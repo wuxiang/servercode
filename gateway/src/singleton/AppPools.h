@@ -17,7 +17,7 @@ private:
     void run();
 
 private:
-    std::map<__uint64_t, AppBasePtr>   m_apps;
+    std::map<uint16_t, AppBasePtr>   m_apps;
 };
 
 #endif //APPPOOLS_H_

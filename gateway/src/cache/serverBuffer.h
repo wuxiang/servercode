@@ -50,8 +50,16 @@ struct  ServerBuffer {
         }
     }
 
+    bool doubleSize() {
+        return this->resize(2 * this->bufferSize);
+    }
+
     bool resize(const std::size_t bs) {
-        std::size_t sz = (bs / bufferSize  + 1) * bufferSize; 
+        std::size_t sz = bufferSize;
+        if (bs > bufferSize) {
+            sz = (bs / bufferSize  + 1) * bufferSize; 
+        }
+            
         if (sz > this->bufferSize ) {
             // mem allocate
             void* tBuffer = realloc(buffer, bufferSize);
@@ -63,6 +71,8 @@ struct  ServerBuffer {
 
             bzero((void*)((char*)buffer + pos), bufferSize - pos);
         }
+
+        return true;
     }
 
     bool moveData() {
@@ -75,6 +85,14 @@ struct  ServerBuffer {
         }
 
         return true;
+    }
+
+    std::size_t  getAvailableSize() {
+        return this->bufferSize - this->pos;
+    }
+
+    std::size_t getDataSize() {
+        return this->pos - this->start;
     }
 
 private:

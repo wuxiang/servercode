@@ -6,6 +6,7 @@
 
 class GatewayProtocol {
 public:
+    // length 表示body的长度
     uint32_t         length;
     uint16_t         svrNO;
     std::string      body;
@@ -20,9 +21,10 @@ public:
 
 class AppSvrProtocol {
 public:
+    // length表示body的长度
     uint32_t       length;
     uint64_t       sequence;
-    uint32_t       version;
+    uint16_t       version;
     std::string    body;
 
 public:
